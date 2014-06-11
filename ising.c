@@ -73,7 +73,7 @@ void update(float J, float H){
 int main(){
 
 	float T = 1.0;
-    float J = 1.01 * 1.0/2.296185;
+    float J = 0.44;
 	float H = 0.001;
 	
 	long t;
