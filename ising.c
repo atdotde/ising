@@ -30,7 +30,7 @@ void init(){
 	srandom(time(NULL));
 }
 
-void output(){
+void output(float H){
 	int x,y;
 	int m=0;
 	FILE *mag;
@@ -53,7 +53,7 @@ void output(){
 	
 	printf("m=%f\n",m/(float)(SIZE * SIZE));
 	mag = fopen("/tmp/magnetization","a");
-	fprintf(mag, "%f\n",m/(float)(SIZE * SIZE));
+    fprintf(mag, "%f %f\n",log(H), m/(float)(SIZE * SIZE));
 	fclose(mag);
 }
 
@@ -73,8 +73,8 @@ void update(float J, float H){
 int main(){
 
 	float T = 1.0;
-    float J = 0.44;
-	float H = 0.001;
+    float J = 1.0/2.296185;
+    float H = 1.0;
 	
 	long t;
 
@@ -83,7 +83,8 @@ int main(){
 	for (t=0L; 1; t++){
 		update(J / T, H / T);
         if(!(t % 100000)){
-			output();
+            output(H);
+            H *= .99;
 		}
 	}
 	return(0);
