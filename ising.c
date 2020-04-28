@@ -90,7 +90,7 @@ void init(){
 		for (y=0; y<SIZE; y++)
 			grid[x][y] = random()/(float)RAND_MAX < 0.3  ? -1 : 1;
 
-	srandom(time(NULL));
+	srandom((int) time(NULL) % (1 << 31));
 }
 
 void output(){
@@ -121,8 +121,8 @@ void output(){
 }
 
 void update(float J, float H){
-	int x = random() * SIZE/RAND_MAX;
-	int y = random() * SIZE/RAND_MAX;
+	int x = (int)(random() * SIZE/RAND_MAX);
+	int y = (int)(random() * SIZE/RAND_MAX);
 
 	int sum = grid[x][torus(y+1)] + grid[x][torus(y - 1)] + grid[torus(x + 1)][y] + grid[torus(x - 1)][y];
 
