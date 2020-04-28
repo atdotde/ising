@@ -14,13 +14,76 @@
 #define PLOTSIZE 80
 #define torus(a) (a < 0 ? a + SIZE : (a >= SIZE ? a - SIZE : a))
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__TOS_WIN__)
+#include <windows.h>
+
+*Turns the cursor on/off*/
+
+void show_console_cursor(bool showFlag)
+{
+	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	CONSOLE_CURSOR_INFO     cursorInfo;
+
+	GetConsoleCursorInfo(out, &cursorInfo);
+	cursorInfo.bVisible = showFlag; // set the cursor visibility
+	SetConsoleCursorInfo(out, &cursorInfo);
+}
+
+/*Sets cursor to the top left position to overwrite terminal output*/
+
+void home() {
+	/*Initialise objects for cursor manipulation*/
+	HANDLE hStdout;
+	COORD destCoord;
+	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	/*Sets coordinates of cursor to (0,0) */
+	destCoord.X = 0;
+	destCoord.Y = 0;
+	SetConsoleCursorPosition(hStdout, destCoord);
+
+	ShowConsoleCursor(false);
+}
+
+void fullscreen(bool bl) {
+	if (bl) {
+		ShowWindow(GetConsoleWindow(), SW_MAXIMIZE);
+	}
+}
+
+
+int random() {
+	return rand();
+}
+
+void srandom(unsigned seed){
+	srand(seed);
+}
+
+void system_init() {
+	fullscreen(true);
+	show_console_cursor(false);
+}
+
+#else
+
+void system_init() {
+}
+
+void home() {
+	printf("\033[1;1H");
+}
+#endif
+
 int grid[SIZE][SIZE];
 
 void init(){
 	int x,y;
 	FILE *mag;
 
-	mag = fopen("/tmp/magnetization","w");
+	system_init();
+	mag = fopen("magnetization","w");
 	fclose(mag);
 
 	for (x=0; x<SIZE; x++)
@@ -36,7 +99,7 @@ void output(){
 	FILE *mag;
 
     /* Cursor home */
-	printf("\033[1;1H");
+	home();
 	for (x=0; x<PLOTSIZE; x++){
 		for (y=0; y<PLOTSIZE*2; y++){
 			if (grid[x][y] == 1)
@@ -52,7 +115,7 @@ void output(){
 			m += grid[x][y];
 	
 	printf("m=%f\n",m/(float)(SIZE * SIZE));
-	mag = fopen("/tmp/magnetization","a");
+	mag = fopen("magnetization","a");
 	fprintf(mag, "%f\n",m/(float)(SIZE * SIZE));
 	fclose(mag);
 }
