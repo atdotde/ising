@@ -17,7 +17,7 @@
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__TOS_WIN__)
 #include <windows.h>
 
-*Turns the cursor on/off*/
+/* Turns the cursor on/off */
 
 void show_console_cursor(bool showFlag)
 {
@@ -90,7 +90,7 @@ void init(){
 		for (y=0; y<GRIDSIZE; y++)
 			grid[x][y] = random()/(float)RAND_MAX < 0.3  ? -1 : 1;
 
-	srandom(time(NULL));
+	srandom((int) time(NULL) % (1 << 31));
 }
 
 void output(){
@@ -121,8 +121,8 @@ void output(){
 }
 
 void update(float J, float H){
-	int x = random() * GRIDSIZE/RAND_MAX;
-	int y = random() * GRIDSIZE/RAND_MAX;
+	int x = (int)(random() * GRIDSIZE/RAND_MAX);
+	int y = (int)(random() * GRIDSIZE/RAND_MAX);
 
 	int sum = grid[x][torus(y+1)] + grid[x][torus(y - 1)] + grid[torus(x + 1)][y] + grid[torus(x - 1)][y];
 
