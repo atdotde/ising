@@ -10,9 +10,9 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
-#define SIZE 600
+#define GRIDSIZE 600
 #define PLOTSIZE 80
-#define torus(a) (a < 0 ? a + SIZE : (a >= SIZE ? a - SIZE : a))
+#define torus(a) (a < 0 ? a + GRIDSIZE : (a >= GRIDSIZE ? a - GRIDSIZE : a))
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__TOS_WIN__)
 #include <windows.h>
@@ -43,7 +43,7 @@ void home() {
 	destCoord.Y = 0;
 	SetConsoleCursorPosition(hStdout, destCoord);
 
-	ShowConsoleCursor(false);
+	show_console_cursor(false);
 }
 
 void fullscreen(bool bl) {
@@ -76,7 +76,7 @@ void home() {
 }
 #endif
 
-int grid[SIZE][SIZE];
+int grid[GRIDSIZE][GRIDSIZE];
 
 void init(){
 	int x,y;
@@ -86,8 +86,8 @@ void init(){
 	mag = fopen("magnetization","w");
 	fclose(mag);
 
-	for (x=0; x<SIZE; x++)
-		for (y=0; y<SIZE; y++)
+	for (x=0; x<GRIDSIZE; x++)
+		for (y=0; y<GRIDSIZE; y++)
 			grid[x][y] = random()/(float)RAND_MAX < 0.3  ? -1 : 1;
 
 	srandom(time(NULL));
@@ -110,19 +110,19 @@ void output(){
 		putchar('\n');
 	}
 
-	for (x=0; x<SIZE; x++)
-		for (y=0; y<SIZE; y++)
+	for (x=0; x<GRIDSIZE; x++)
+		for (y=0; y<GRIDSIZE; y++)
 			m += grid[x][y];
 	
-	printf("m=%f\n",m/(float)(SIZE * SIZE));
+	printf("m=%f\n",m/(float)(GRIDSIZE * GRIDSIZE));
 	mag = fopen("magnetization","a");
-	fprintf(mag, "%f\n",m/(float)(SIZE * SIZE));
+	fprintf(mag, "%f\n",m/(float)(GRIDSIZE * GRIDSIZE));
 	fclose(mag);
 }
 
 void update(float J, float H){
-	int x = random() * SIZE/RAND_MAX;
-	int y = random() * SIZE/RAND_MAX;
+	int x = random() * GRIDSIZE/RAND_MAX;
+	int y = random() * GRIDSIZE/RAND_MAX;
 
 	int sum = grid[x][torus(y+1)] + grid[x][torus(y - 1)] + grid[torus(x + 1)][y] + grid[torus(x - 1)][y];
 
