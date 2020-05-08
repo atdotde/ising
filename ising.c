@@ -10,6 +10,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
+
 #define GRIDSIZE 600
 #define PLOTSIZE 80
 #define torus(a) (a < 0 ? a + GRIDSIZE : (a >= GRIDSIZE ? a - GRIDSIZE : a))
