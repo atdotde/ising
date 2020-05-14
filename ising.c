@@ -14,7 +14,6 @@
 
 #define GRIDSIZE 600
 #define PLOTSIZE 80
-#define torus(a) (a < 0 ? a + GRIDSIZE : (a >= GRIDSIZE ? a - GRIDSIZE : a))
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__TOS_WIN__)
 #include <windows.h>
@@ -79,6 +78,10 @@ void home() {
 #endif
 
 int grid[GRIDSIZE][GRIDSIZE];
+
+inline int torus(int a) {
+	return a < 0 ? a + GRIDSIZE : (a >= GRIDSIZE ? a - GRIDSIZE : a);
+}
 
 void init(){
 	int x,y;
