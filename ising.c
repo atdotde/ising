@@ -126,6 +126,9 @@ void update(float J, float H){
 	int x = (int)(random() * GRIDSIZE/RAND_MAX);
 	int y = (int)(random() * GRIDSIZE/RAND_MAX);
 
+	if (x >= GRIDSIZE || y >= GRIDSIZE)
+		return;
+
 	int sum = grid[x][torus(y+1)] + grid[x][torus(y - 1)] + grid[torus(x + 1)][y] + grid[torus(x - 1)][y];
 
 	double E = 2.0 * grid[x][y] * (J * sum + H);
