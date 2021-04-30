@@ -79,7 +79,7 @@ void home() {
 
 int grid[GRIDSIZE][GRIDSIZE];
 
-inline int torus(int a) {
+int torus(int a) {
 	return a < 0 ? a + GRIDSIZE : (a >= GRIDSIZE ? a - GRIDSIZE : a);
 }
 
